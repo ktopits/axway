@@ -1,0 +1,53 @@
+{
+	"d" : {
+		"__metadata" : {
+			"uri" : "https://xdn-qa4.xfinity.com/sig/v1/Subscribers('298522361903062009Comcast.USR3JR')",
+			"type" : "SIG.Model.Subscriber"
+		},
+		"guid" : "298522361903062009Comcast.USR3JR",
+		"username" : "ccent_1223@comcast.net",
+		"firstName" : "DR48v5",
+		"middleName" : null,
+		"lastName" : "FUSION2v5",
+		"role" : "PRIMARY",
+		"status" : "ACTIVE",
+		"alternativeEmails" : {
+			"results" : [
+			
+			]
+		},
+		"mobilePhoneNumbers" : {
+			"results" : [
+			
+			]
+		},
+		"dateOfBirth" : null,
+		"locale" : "en_US",
+		"zipCode" : null,
+		"accounts" : {
+			"__deferred" : {
+				"uri" : "https://xdn-qa4.xfinity.com/sig/v1/Subscribers('298522361903062009Comcast.USR3JR')/accounts"
+			}
+		},
+		"idMap" : {
+			"__deferred" : {
+				"uri" : "https://xdn-qa4.xfinity.com/sig/v1/Subscribers('298522361903062009Comcast.USR3JR')/idMap"
+			}
+		},
+		"preferences" : {
+			"__deferred" : {
+				"uri" : "https://xdn-qa4.xfinity.com/sig/v1/Subscribers('298522361903062009Comcast.USR3JR')/preferences"
+			}
+		},
+		"household" : {
+			"__deferred" : {
+				"uri" : "https://xdn-qa4.xfinity.com/sig/v1/Subscribers('298522361903062009Comcast.USR3JR')/household"
+			}
+		},
+		"devices" : {
+			"__deferred" : {
+				"uri" : "https://xdn-qa4.xfinity.com/sig/v1/Subscribers('298522361903062009Comcast.USR3JR')/devices"
+			}
+		}
+	}
+}

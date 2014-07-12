@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:api="sig:api">
+	<edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+		
+		<Schema Namespace="SIG.Model" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Subscriber">
+				<Key><PropertyRef Name="guid"/></Key>
+				<Property Name="guid" Type="Edm.String" Nullable="false"/>
+				<Property Name="username" Type="Edm.String" Nullable="false"/>
+				<Property Name="firstName" Type="Edm.String" Nullable="true"/>
+				<Property Name="middleName" Type="Edm.String" Nullable="true"/>
+				<Property Name="lastName" Type="Edm.String" Nullable="true"/>
+				<Property Name="role" Type="Edm.String" Nullable="false"/>
+				<Property Name="status" Type="Edm.String" Nullable="false"/>
+				<Property Name="alternativeEmails" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="mobilePhoneNumbers" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="dateOfBirth" Type="Edm.String" Nullable="true"/>
+				<Property Name="locale" Type="Edm.String" Nullable="true"/>
+				<Property Name="zipCode" Type="Edm.String" Nullable="false"/>
+				<NavigationProperty Name="accounts" Relationship="SIG.Model.Subscribers_Accounts" FromRole="Subscribers" ToRole="Accounts"/>
+				<NavigationProperty Name="idMap" Relationship="SIG.Model.Subscriber_IdMap" FromRole="Subscriber" ToRole="IdMap"/>
+				<NavigationProperty Name="preferences" Relationship="SIG.Model.Subscriber_SubscriberPreferences" FromRole="Subscriber" ToRole="SubscriberPreferences"/>
+				<NavigationProperty Name="household" Relationship="SIG.Model.Household_Subscribers" FromRole="Subscribers" ToRole="Household"/>
+				<NavigationProperty Name="devices" Relationship="SIG.Model.Subscriber_Devices" FromRole="Subscriber" ToRole="Devices">
+					<api:DEPRECATED>'devices' association represents CPE devices and is going to be moved to the Household entity in the future</api:DEPRECATED>
+				</NavigationProperty>
+			</EntityType>
+			
+			<EntityType Name="Household">
+				<Key><PropertyRef Name="guid"/></Key>
+				<Property Name="guid" Type="Edm.String" Nullable="false"/>
+				<NavigationProperty Name="preferences" Relationship="SIG.Model.Household_HouseholdPreferences" FromRole="Household" ToRole="HouseholdPreferences"/>
+				<NavigationProperty Name="devices" Relationship="SIG.Model.Household_Devices" FromRole="Household" ToRole="Devices">
+					<api:UNIMPLEMENTED>'devices' association is going to be moved in here from the Subscriber entity</api:UNIMPLEMENTED>
+				</NavigationProperty><api:BETA>Household model is in early stages of development</api:BETA>
+			</EntityType>
+			
+			<EntityType Name="Account">
+				<Key><PropertyRef Name="guid"/></Key>
+				<Property Name="guid" Type="Edm.String" Nullable="false"/>
+				<Property Name="number" Type="Edm.String" Nullable="false"/>
+				<Property Name="name" Type="Edm.String" Nullable="false"/>
+				<Property Name="billingSystem" Type="Edm.String" Nullable="false"/><Property Name="serviceAddress" Type="SIG.Model.Address" Nullable="false"/>
+				<NavigationProperty Name="subscribers" Relationship="SIG.Model.Subscribers_Accounts" FromRole="Accounts" ToRole="Subscribers"/>
+			</EntityType>
+			
+			<EntityType Name="IdMapEntry">
+				<Key><PropertyRef Name="subscriberGuid"/><PropertyRef Name="site"/></Key>
+				<Property Name="subscriberGuid" Type="Edm.String" Nullable="false"/>
+				<Property Name="site" Type="Edm.String" Nullable="false">
+					<api:ENUM>
+						<api:VALUE>Facebook</api:VALUE>
+						<api:VALUE>Twitter</api:VALUE>
+						<api:VALUE>Plaxo</api:VALUE>
+						<api:VALUE>Flickr</api:VALUE>
+						<api:VALUE>Picasa</api:VALUE>
+						<api:VALUE>AstroSkype</api:VALUE>
+						<api:VALUE>Pandora</api:VALUE>
+						<api:VALUE>Tunerfish</api:VALUE>
+					</api:ENUM>
+				</Property>
+				<Property Name="siteId" Type="Edm.Int32" Nullable="false">
+					<api:DEPRECATED>For dev purposes only.</api:DEPRECATED>
+				</Property>
+				<Property Name="userId" Type="Edm.String" Nullable="false"/>
+				<Property Name="siteData" Type="Edm.String" Nullable="false"/>
+			</EntityType>
+			
+			<EntityType Name="Device">
+				<Key><PropertyRef Name="guid"/></Key>
+				<Property Name="guid" Type="Edm.String" Nullable="false"/>
+				<Property Name="name" Type="Edm.String" Nullable="false"/>
+				<Property Name="type" Type="Edm.String" Nullable="false"/>
+				<Property Name="family" Type="Edm.String" Nullable="false"/>
+				<Property Name="capabilities" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="resetLockPinAction" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="resetPurchasePinAction" Type="Edm.Boolean" Nullable="false"/>
+				<NavigationProperty Name="preferences" Relationship="SIG.Model.Device_DevicePreferences" FromRole="Device" ToRole="DevicePreferences"/>
+			</EntityType>
+			
+			<EntityType Name="SubscriberPreferences">
+				<Key><PropertyRef Name="subscriberGuid"/></Key>
+				<Property Name="subscriberGuid" Type="Edm.String" Nullable="false"/>
+				<Property Name="weatherZipcodes" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="weatherDashboardVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="trafficZipcodes" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="trafficDashboardVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="pandoraAccessPinFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="facebookAccessPinFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="facebookSharePinFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="twitterSharePinFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="voicemailAccessPinFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="voicemailDashboardVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="stocksSymbols" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="stocksDashboardVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="stocksAccessPinFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="newsFeeds" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="newsEmails" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="photosVisibleSites" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="photosAccessPinFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="photosFacebookDisplayedInMenuFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="photosFlickrDisplayedInMenuFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="photosInstagramDisplayedInMenuFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="horoscopeSigns" Type="Edm.String" Nullable="false" CollectionKind="List"/>
+				<Property Name="horoscopeDashboardVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+				<api:BETA>Currently most of the preferences are application specific (vs. user specific). In the future they might be refactored into a separate entities representing application specific preferences</api:BETA>
+			</EntityType>
+			
+			<EntityType Name="HouseholdPreferences">
+				<Key><PropertyRef Name="householdGuid"/></Key>
+				<Property Name="householdGuid" Type="Edm.String" Nullable="false"/>
+				<Property Name="applications" Type="SIG.Model.PreferredApplication" Nullable="false" CollectionKind="List"/>
+				<Property Name="zipcodes" Type="SIG.Model.PreferredZipcode" Nullable="false" CollectionKind="List"/>
+				<Property Name="stocks" Type="SIG.Model.PreferredStock" Nullable="false" CollectionKind="List"/>
+				<Property Name="requireApplicationPinProtection" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="zodiacs" Type="SIG.Model.PreferredZodiac" Nullable="false" CollectionKind="List"/>
+				<Property Name="newsfeeds" Type="SIG.Model.PreferredNewsfeed" Nullable="false" CollectionKind="List"/>
+			</EntityType>
+			
+			<EntityType Name="DevicePreferences">
+				<Key><PropertyRef Name="deviceGuid"/></Key>
+				<Property Name="deviceGuid" Type="Edm.String" Nullable="false"/>
+				<Property Name="callerIdVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="textMessagesVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+				<Property Name="calendarVisibilityFlag" Type="Edm.Boolean" Nullable="false"/>
+			</EntityType>
+			
+			<ComplexType Name="Address">
+				<Property Name="streetAddress" Type="Edm.String" Nullable="false"/>
+				<Property Name="city" Type="Edm.String" Nullable="false"/>
+				<Property Name="state" Type="Edm.String" Nullable="false"/>
+				<Property Name="zipCode" Type="Edm.String" Nullable="false"/>
+			</ComplexType>
+			
+			<ComplexType Name="PreferredApplication">
+				<Property Name="name" Type="Edm.String" Nullable="false"/>
+				<Property Name="applicationId" Type="Edm.String" Nullable="false"/>
+			</ComplexType>
+			
+			<ComplexType Name="PreferredZipcode">
+				<Property Name="tag" Type="Edm.String" Nullable="true"/>
+				<Property Name="zipcode" Type="Edm.String" Nullable="false"/>
+			</ComplexType>
+			
+			<ComplexType Name="PreferredStock">
+				<Property Name="tag" Type="Edm.String" Nullable="true"/>
+				<Property Name="stockSymbol" Type="Edm.String" Nullable="false"/>
+			</ComplexType>
+			
+			<ComplexType Name="PreferredZodiac">
+				<Property Name="tag" Type="Edm.String" Nullable="true"/>
+				<Property Name="zodiac" Type="Edm.String" Nullable="false"/>
+			</ComplexType>
+			
+			<ComplexType Name="PreferredNewsfeed">
+				<Property Name="name" Type="Edm.String" Nullable="true"/>
+				<Property Name="newsfeedUrl" Type="Edm.String" Nullable="false"/>
+			</ComplexType>
+			
+			<Association Name="Subscribers_Accounts">
+				<End Type="SIG.Model.Subscriber" Multiplicity="*" Role="Subscribers"/>
+				<End Type="SIG.Model.Account" Multiplicity="*" Role="Accounts"/>
+			</Association>
+			
+			<Association Name="Subscriber_IdMap">
+				<End Type="SIG.Model.Subscriber" Multiplicity="1" Role="Subscriber"/>
+				<End Type="SIG.Model.IdMapEntry" Multiplicity="*" Role="IdMap"/>
+				<ReferentialConstraint>
+					<Principal Role="Subscriber">
+						<PropertyRef Name="guid"/>
+					</Principal>
+					<Dependent Role="IdMap">
+						<PropertyRef Name="subscriberGuid"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			
+			<Association Name="Subscriber_SubscriberPreferences">
+				<End Type="SIG.Model.Subscriber" Multiplicity="1" Role="Subscriber"/>
+				<End Type="SIG.Model.SubscriberPreferences" Multiplicity="1" Role="SubscriberPreferences"/>
+				<ReferentialConstraint>
+					<Principal Role="Subscriber">
+						<PropertyRef Name="guid"/>
+					</Principal>
+					<Dependent Role="SubscriberPreferences">
+						<PropertyRef Name="subscriberGuid"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			
+			<Association Name="Subscriber_Devices">
+				<End Type="SIG.Model.Subscriber" Multiplicity="1" Role="Subscriber"/>
+				<End Type="SIG.Model.Device" Multiplicity="*" Role="Devices"/>
+			</Association>
+			
+			<Association Name="Device_DevicePreferences">
+				<End Type="SIG.Model.Device" Multiplicity="1" Role="Device"/>
+				<End Type="SIG.Model.DevicePreferences" Multiplicity="1" Role="DevicePreferences"/>
+			</Association>
+			
+			<Association Name="Household_Subscribers">
+				<End Type="SIG.Model.Household" Multiplicity="1" Role="Household"/>
+				<End Type="SIG.Model.Subscriber" Multiplicity="*" Role="Subscribers"/>
+			</Association>
+			
+			<Association Name="Household_HouseholdPreferences">
+				<End Type="SIG.Model.Household" Multiplicity="1" Role="Household"/>
+				<End Type="SIG.Model.HouseholdPreferences" Multiplicity="1" Role="HouseholdPreferences"/>
+				<ReferentialConstraint>
+					<Principal Role="Household">
+						<PropertyRef Name="guid"/>
+					</Principal>
+					<Dependent Role="HouseholdPreferences">
+						<PropertyRef Name="householdGuid"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			
+			<Association Name="Household_Devices">
+				<End Type="SIG.Model.Household" Multiplicity="1" Role="Household"/>
+				<End Type="SIG.Model.Device" Multiplicity="*" Role="Devices"/>
+			</Association>
+		</Schema>
+		
+		<Schema Namespace="SIG.Service" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityContainer Name="SigService" m:IsDefaultEntityContainer="true">
+				
+				<EntitySet Name="Subscribers" EntityType="SIG.Model.Subscriber"/>
+				<EntitySet Name="Households" EntityType="SIG.Model.Household"/>
+				<EntitySet Name="Accounts" EntityType="SIG.Model.Account"/>
+				<EntitySet Name="IdMap" EntityType="SIG.Model.IdMapEntry"/>
+				<EntitySet Name="SubscriberPreferences" EntityType="SIG.Model.SubscriberPreferences"/>
+				<EntitySet Name="HouseholdPreferences" EntityType="SIG.Model.HouseholdPreferences"/>
+				<EntitySet Name="Devices" EntityType="SIG.Model.Device"/>
+				<EntitySet Name="DevicePreferences" EntityType="SIG.Model.DevicePreferences"/>
+				
+				<AssociationSet Name="Subscribers_Accounts" Association="SIG.Model.Subscribers_Accounts">
+					<End EntitySet="Subscribers" Role="Subscribers"/>
+					<End EntitySet="Accounts" Role="Accounts"/>
+				</AssociationSet>
+				
+				<AssociationSet Name="Subscriber_IdMap" Association="SIG.Model.Subscriber_IdMap">
+					<End EntitySet="Subscribers" Role="Subscriber"/>
+					<End EntitySet="IdMap" Role="IdMap"/>
+				</AssociationSet>
+				
+				<AssociationSet Name="Subscriber_SubscriberPreferences" Association="SIG.Model.Subscriber_SubscriberPreferences">
+					<End EntitySet="Subscribers" Role="Subscriber"/>
+					<End EntitySet="SubscriberPreferences" Role="SubscriberPreferences"/>
+				</AssociationSet>
+				
+				<AssociationSet Name="Subscriber_Devices" Association="SIG.Model.Subscriber_Devices">
+					<End EntitySet="Subscribers" Role="Subscriber"/>
+					<End EntitySet="Devices" Role="Devices"/>
+				</AssociationSet>
+				
+				<AssociationSet Name="Device_DevicePreferences" Association="SIG.Model.Device_DevicePreferences">
+					<End EntitySet="Devices" Role="Device"/><End EntitySet="DevicePreferences" Role="DevicePreferences"/>
+				</AssociationSet>
+				<AssociationSet Name="Household_Subscribers" Association="SIG.Model.Household_Subscribers">
+					<End EntitySet="Households" Role="Household"/>
+					<End EntitySet="Subscribers" Role="Subscribers"/>
+				</AssociationSet>
+				
+				<AssociationSet Name="Household_HouseholdPreferences" Association="SIG.Model.Household_HouseholdPreferences">
+					<End EntitySet="Households" Role="Household"/>
+					<End EntitySet="HouseholdPreferences" Role="HouseholdPreferences"/>
+				</AssociationSet>
+			</EntityContainer>
+		</Schema>
+
+	</edmx:DataServices>
+</edmx:Edmx>

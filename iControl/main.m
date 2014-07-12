@@ -1,18 +1,17 @@
 //
 //  main.m
-//  iControl
 //
-//  Created by Kirk Topits on 8/22/13.
-//  Copyright (c) 2013 Apigee. All rights reserved.
+//  Created by Kirk Topits on 5/8/2014.
+//  Copyright (c) 2014. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-#import "ICNAppDelegate.h"
+#import "AppDelegate.h"
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([ICNAppDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }
